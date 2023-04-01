@@ -2,13 +2,13 @@
 pragma solidity ^0.8.0;
 
 abstract contract Base {
-    uint256 immutable private _startTime;
-    uint256 immutable private _endTime;
-    uint256 immutable private _fullScore;
+    uint256 private immutable _startTime;
+    uint256 private immutable _endTime;
+    uint256 private immutable _fullScore;
 
     uint256 private _completeTime;
 
-    constructor (uint256 startTime, uint256 endTime, uint256 fullScore) {
+    constructor(uint256 startTime, uint256 endTime, uint256 fullScore) {
         require(startTime >= block.timestamp);
         require(endTime >= startTime);
         _startTime = startTime;

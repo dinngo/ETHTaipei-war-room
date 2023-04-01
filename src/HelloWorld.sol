@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { Base } from "./Base.sol";
+import {Base} from "./Base.sol";
 
 contract HelloWorld {
-    bytes32 immutable private _answer;
+    bytes32 private immutable _answer;
 
     bool public success;
 
@@ -23,14 +23,13 @@ contract HelloWorld {
 contract HelloWorldBase is Base {
     HelloWorld public helloWorld;
 
-    constructor (uint256 startTime, uint256 endTime, uint256 fullScore) Base (startTime, endTime, fullScore) {
-    }
+    constructor(uint256 startTime, uint256 endTime, uint256 fullScore) Base(startTime, endTime, fullScore) {}
 
-    function setup() override external {
+    function setup() external override {
         helloWorld = new HelloWorld();
     }
 
-    function solve() override public {
+    function solve() public override {
         require(helloWorld.success());
         super.solve();
     }
