@@ -3,35 +3,34 @@ pragma solidity ^0.8.0;
 
 abstract contract Base {
     uint256 immutable private _startTime;
+    uint256 immutable private _endTime;
     uint256 immutable private _fullScore;
-    uint256 immutable private _baseScore;
-    uint256 immutable private _multiplier;
 
     uint256 private _completeTime;
 
-    constructor (uint256 startTime, uint256 fullScore, uint256 baseScore, uint256 multiplier) {
+    constructor (uint256 startTime, uint256 endTime, uint256 fullScore) {
         require(startTime >= block.timestamp);
-        require(fullScore >= baseScore);
+        require(endTime >= startTime);
         _startTime = startTime;
+        _endTime = endTime;
         _fullScore = fullScore;
-        _baseScore = baseScore;
-        _multiplier = multiplier;
     }
 
     function setup() external virtual;
 
     function getCurrentScore() external view returns (uint256) {
-        uint256 score = (block.timestamp - _startTime) * _multiplier;
-        return _getScore(score);
+        return _getScore(block.timestamp);
     }
 
     function getFinalScore() external view returns (uint256) {
-        require(isSolved(), "Not solved");
-        uint256 score = (_completeTime - _startTime) * _multiplier;
-        return _getScore(score);
+        if (isSolved()) {
+            return _getScore(_completeTime);
+        } else {
+            return 0;
+        }
     }
 
-    function solve() external virtual {
+    function solve() public virtual {
         _completeTime = block.timestamp;
     }
 
@@ -39,11 +38,13 @@ abstract contract Base {
         return _completeTime != 0;
     }
 
-    function _getScore(uint256 score) internal view returns (uint256) {
-        if (_fullScore - _baseScore > score) {
-            return _fullScore - score;
+    function _getScore(uint256 timestamp) internal view returns (uint256) {
+        if (timestamp > _startTime) {
+            return _fullScore - (block.timestamp - _startTime);
+        } else if (timestamp > _endTime) {
+            return 0;
         } else {
-            return _baseScore;
+            return _fullScore;
         }
     }
 }
