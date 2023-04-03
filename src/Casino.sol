@@ -141,12 +141,29 @@ contract Casino is CasinoBank {
         _;
     }
 
-    function play(address token, uint256 amount, bool choice) public checkPlay {
+    function play(address token, uint256 amount) public checkPlay {
         _bet(token, amount);
         CasinoToken cToken = isCToken(token) ? CasinoToken(token) : CasinoToken(_tokenMap[token]);
         // play
-        if (choice) {
-            cToken.get(msg.sender, amount * 2);
+
+        cToken.get(msg.sender, amount * slot());
+    }
+
+    function slot() public view returns (uint256) {
+        unchecked {
+            uint256 answer = uint256(blockhash(block.number - 1)) % 1000;
+            uint256[3] memory slots = [(answer / 100) % 10, (answer / 10) % 10, answer % 10];
+            if (slots[0] == slots[1] && slots[1] == slots[2]) {
+                if (slots[0] == 7) {
+                    return 100;
+                } else {
+                    return 10;
+                }
+            } else if (slots[0] == slots[1] || slots[1] == slots[2] || slots[0] == slots[2]) {
+                return 3;
+            } else {
+                return 0;
+            }
         }
     }
 
