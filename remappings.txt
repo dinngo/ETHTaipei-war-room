@@ -1,5 +1,6 @@
 ds-test/=lib/forge-std/lib/ds-test/src/
 forge-std/=lib/forge-std/src/
 openzeppelin-contracts/=lib/openzeppelin-contracts/
+openzeppelin-contracts-07/=lib/openzeppelin-contracts-07/
 v2-core/=lib/v2-core/contracts/
 v2-periphery/=lib/v2-periphery/contracts/
