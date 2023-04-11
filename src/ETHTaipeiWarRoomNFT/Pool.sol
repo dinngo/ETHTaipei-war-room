@@ -1,9 +1,11 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.7.0;
 
 import {IERC721Receiver} from "openzeppelin-contracts-07/contracts/token/ERC721/IERC721Receiver.sol";
 import {IERC721} from "openzeppelin-contracts-07/contracts/token/ERC721/IERC721.sol";
 import {ERC20} from "openzeppelin-contracts-07/contracts/token/ERC20/ERC20.sol";
+import {Base} from "src/Base.sol";
+import {WarRoomNFT} from "./NFT.sol";
 
 contract Pool is ERC20("USD Taipei", "USDT"), IERC721Receiver {
     mapping(address => uint256) private _balances;
@@ -34,7 +36,28 @@ contract Pool is ERC20("USD Taipei", "USDT"), IERC721Receiver {
         delete _userDeposits[msg.sender][tokenId];
     }
 
-    function isSolved() public view returns (bool) {
-        return _balances[msg.sender] > 1000 ether;
+    function isSolved(address user) external view returns (bool) {
+        return _balances[user] > 1000 ether;
+    }
+}
+
+contract PoolBase is Base {
+    WarRoomNFT public nft;
+    Pool public pool;
+    uint256 public tokenId;
+    address public challenger;
+
+    constructor(uint256 startTime, uint256 endTime, uint256 fullScore) Base(startTime, endTime, fullScore) {}
+
+    function setup() external override {
+        challenger = msg.sender;
+        nft = new WarRoomNFT();
+        pool = new Pool(address(nft));
+        tokenId = nft.mint(challenger);
+    }
+
+    function solve() public override {
+        require(pool.isSolved(challenger));
+        super.solve();
     }
 }

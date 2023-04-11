@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity >= 0.7.0;
 
 abstract contract Base {
     uint256 private immutable _startTime;
@@ -40,7 +40,9 @@ abstract contract Base {
 
     function _getScore(uint256 timestamp) internal view returns (uint256) {
         if (timestamp > _startTime) {
-            return _fullScore - (block.timestamp - _startTime);
+            uint256 score = _fullScore - (block.timestamp - _startTime);
+            require(_fullScore >= score);
+            return score;
         } else if (timestamp > _endTime) {
             return 0;
         } else {
