@@ -29,7 +29,7 @@ contract Ans {
     }
 
     function shout() external view returns (string memory) {
-        if (gasleft() >= 8797746687696136000) {
+        if (gasleft() >= 8797746687695915000) {
             return "I'm the best";
         } else {
             return "We are the champion!";

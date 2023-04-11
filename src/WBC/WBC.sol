@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import {Base} from "src/Base.sol";
+
 interface IGame {
     function judge() external view returns (address);
     function steal() external view returns (uint256);
@@ -93,5 +95,20 @@ contract WBC {
                 == keccak256(abi.encodePacked("We are the champion!")),
             "out"
         );
+    }
+}
+
+contract WBCBase is Base {
+    WBC public wbc;
+
+    constructor(uint256 startTime, uint256 endTime, uint256 fullScore) Base(startTime, endTime, fullScore) {}
+
+    function setup() external override {
+        wbc = new WBC();
+    }
+
+    function solve() public override {
+        require(wbc.scored());
+        super.solve();
     }
 }
