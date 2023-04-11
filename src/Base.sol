@@ -9,8 +9,8 @@ abstract contract Base {
     uint256 private _completeTime;
 
     constructor(uint256 startTime, uint256 endTime, uint256 fullScore) {
-        require(startTime >= block.timestamp);
-        require(endTime >= startTime);
+        require(startTime >= block.timestamp, "wrong start time");
+        require(endTime >= startTime, "wrong end time");
         _startTime = startTime;
         _endTime = endTime;
         _fullScore = fullScore;
@@ -39,14 +39,17 @@ abstract contract Base {
     }
 
     function _getScore(uint256 timestamp) internal view returns (uint256) {
-        if (timestamp > _startTime) {
-            uint256 score = _fullScore - (block.timestamp - _startTime);
-            if (score > _fullScore) return 0;
-            else return score;
+        if (timestamp < _startTime) {
+            return _fullScore;
         } else if (timestamp > _endTime) {
             return 0;
         } else {
-            return _fullScore;
+            uint256 dScore = timestamp - _startTime;
+            if (dScore > _fullScore) {
+                return 0;
+            } else {
+                return _fullScore - dScore;
+            }
         }
     }
 }
