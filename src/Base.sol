@@ -41,8 +41,8 @@ abstract contract Base {
     function _getScore(uint256 timestamp) internal view returns (uint256) {
         if (timestamp > _startTime) {
             uint256 score = _fullScore - (block.timestamp - _startTime);
-            require(_fullScore >= score);
-            return score;
+            if (score > _fullScore) return 0;
+            else return score;
         } else if (timestamp > _endTime) {
             return 0;
         } else {

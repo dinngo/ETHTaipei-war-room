@@ -23,7 +23,7 @@ contract WBCTest is Test {
     }
 
     function testAnswer() external {
-        ans = new Ans{salt: bytes32(uint256(48))}(address(wbc));
+        ans = new Ans{salt: bytes32(uint256(34))}(address(wbc));
         ans.win();
         base.solve();
     }
