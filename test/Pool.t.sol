@@ -18,11 +18,11 @@ contract PoolTest is Test {
         _tokenId = nft.mint(address(this));
     }
 
-    function onERC721Received(address, address from, uint256 tokenId, bytes memory) external returns (bytes4) {
+    function onERC721Received(address, address, uint256 tokenId, bytes memory) external returns (bytes4) {
         if (times < 1) {
             times++;
             nft.safeTransferFrom(address(this), address(pool), 1);
-            Pool(from).withdraw(tokenId);
+            pool.withdraw(tokenId);
         }
         return this.onERC721Received.selector;
     }
