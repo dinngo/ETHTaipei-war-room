@@ -3,7 +3,8 @@ pragma solidity ^0.8.0;
 
 import {IERC20, ERC20, ERC20Wrapper} from "openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Wrapper.sol";
 import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
-import {Base} from "./Base.sol";
+import {Base} from "src/Base.sol";
+import {WrappedNative} from "./WNative.sol";
 
 contract CasinoToken is ERC20Wrapper, Ownable {
     constructor(address token)
@@ -182,25 +183,21 @@ contract Casino is CasinoBank {
 contract CasinoBase is Base {
     Casino public casino;
 
-    address public immutable WETH;
+    WrappedNative public immutable wNative;
 
-    constructor(
-        uint256 startTime,
-        uint256 endTime,
-        uint256 fullScore,
-        address WETH_
-    ) Base(startTime, endTime, fullScore) {
-        WETH = WETH_;
+    constructor(uint256 startTime, uint256 endTime, uint256 fullScore) Base(startTime, endTime, fullScore) {
+        wNative = new WrappedNative();
     }
 
     function setup() external override {
         casino = new Casino();
-        casino.allowToken(WETH);
-        IERC20(WETH).transfer(address(casino), 1_000e18);
+        casino.allowToken(address(wNative));
+        wNative.mint(msg.sender, 1);
+        wNative.mint(address(casino), 1_000e18);
     }
 
     function solve() public override {
-        require(IERC20(WETH).balanceOf(address(casino)) == 0);
+        require(IERC20(wNative).balanceOf(address(casino)) == 0);
         super.solve();
     }
 }

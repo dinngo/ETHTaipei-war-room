@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import {IERC20, ERC20, ERC20Wrapper} from "openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Wrapper.sol";
 import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
-import {Base} from "./Base.sol";
+import {Base} from "../Base.sol";
 
 contract CasinoToken is ERC20Wrapper, Ownable {
     constructor(address token)
