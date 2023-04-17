@@ -65,7 +65,7 @@ contract CasinoAdvancedTest is Test {
         casino.withdraw(Config.WBTC, 1.5e8);
         // solve
         base.solve();
-        assertEq(base.isSolved(), true);
+        assertTrue(base.isSolved());
         vm.stopPrank();
     }
 }

@@ -28,6 +28,7 @@ contract PoolTest is Test {
         pool.deposit(tokenId);
         pool.withdraw(tokenId);
         base.solve();
+        assertTrue(base.isSolved());
     }
 
     function onERC721Received(address, address, uint256 tokenId, bytes memory) external returns (bytes4) {

@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+// A new Arcade is online.
+// Let's see who can win over 200 PRIZE tokens.
+
 import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
 import {ERC20, IERC20} from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 
-import {Base} from "./Base.sol";
+import {Base} from "../Base.sol";
 
 contract Arcade is ERC20("prize", "PRIZE"), Ownable {
     address public currentPlayer;

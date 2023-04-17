@@ -39,7 +39,7 @@ contract CasinoTest is Test {
 
         // solve
         base.solve();
-        assertEq(base.isSolved(), true);
+        assertTrue(base.isSolved());
         vm.stopPrank();
     }
 }

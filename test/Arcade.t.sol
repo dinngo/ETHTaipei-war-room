@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {Test} from "forge-std/Test.sol";
-import {ArcadeBase, Arcade} from "src/Arcade.sol";
+import {ArcadeBase, Arcade} from "src/Arcade/Arcade.sol";
 
 contract ArcadeTest is Test {
     ArcadeBase public arcadeBase;
@@ -82,8 +82,8 @@ contract ArcadeTest is Test {
         arcade.earn(); // Earn 10 points
         arcade.redeem(); // Mint 10 PRIZE
         arcade.changePlayer(player4); // Mint 190 PRIZE
-        vm.stopPrank();
         arcadeBase.solve();
-        assertEq(arcadeBase.isSolved(), true);
+        assertTrue(arcadeBase.isSolved());
+        vm.stopPrank();
     }
 }

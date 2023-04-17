@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+// Players are welcome to join this famous world baseball championship.
+// To win the championship, players need to solve the challenges to score.
+// Let's see who will be the MVP this year!
+
 import {Base} from "src/Base.sol";
 
 interface IGame {

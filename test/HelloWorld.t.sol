@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {Test} from "forge-std/Test.sol";
-import {HelloWorldBase, HelloWorld} from "src/HelloWorld.sol";
+import {HelloWorldBase, HelloWorld} from "src/HelloWorld/HelloWorld.sol";
 
 contract HelloWorldTest is Test {
     HelloWorldBase public base;
@@ -19,6 +19,7 @@ contract HelloWorldTest is Test {
         HelloWorld h = base.helloWorld();
         h.answer("HelloWorld");
         base.solve();
+        assertTrue(base.isSolved());
     }
 
     function testIncorrectAnswer() public {
