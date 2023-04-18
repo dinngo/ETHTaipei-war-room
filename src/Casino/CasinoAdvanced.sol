@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+// Let's win all the prize in the casino!
+
 import {IERC20, ERC20, ERC20Wrapper} from "openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Wrapper.sol";
 import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
-import {Base} from "./Base.sol";
+import {Base} from "../Base.sol";
 
 contract CasinoToken is ERC20Wrapper, Ownable {
     constructor(address token)
@@ -179,27 +181,42 @@ contract Casino is CasinoBank {
     }
 }
 
-contract CasinoBase is Base {
+contract CasinoAdvancedBase is Base {
     Casino public casino;
 
+    address public immutable USDC;
+    address public immutable WBTC;
     address public immutable WETH;
+    address public immutable swap;
 
     constructor(
         uint256 startTime,
         uint256 endTime,
         uint256 fullScore,
-        address WETH_
+        address USDC_,
+        address WBTC_,
+        address WETH_,
+        address router02
     ) Base(startTime, endTime, fullScore) {
+        USDC = USDC_;
+        WBTC = WBTC_;
         WETH = WETH_;
+        swap = router02;
     }
 
     function setup() external override {
         casino = new Casino();
+        casino.allowToken(USDC);
+        casino.allowToken(WBTC);
         casino.allowToken(WETH);
+        IERC20(USDC).transfer(address(casino), 1_000_000e6);
         IERC20(WETH).transfer(address(casino), 1_000e18);
+        IERC20(WBTC).transfer(address(casino), 1e8);
     }
 
     function solve() public override {
+        require(IERC20(USDC).balanceOf(address(casino)) == 0);
+        require(IERC20(WBTC).balanceOf(address(casino)) == 0);
         require(IERC20(WETH).balanceOf(address(casino)) == 0);
         super.solve();
     }

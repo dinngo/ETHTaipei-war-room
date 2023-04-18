@@ -22,10 +22,12 @@ contract WBCTest is Test {
         wbc = base.wbc();
     }
 
-    function testAnswer() external {
-        ans = new Ans{salt: bytes32(uint256(34))}(address(wbc));
+    function testExploit() external {
+        uint256 salt = 1;
+        ans = new Ans{salt: bytes32(salt)}(address(wbc));
         ans.win();
         base.solve();
+        assertTrue(base.isSolved());
     }
 
     function testCannotHomeRunEasily() external {

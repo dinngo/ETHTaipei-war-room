@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {Base} from "./Base.sol";
+// Hello World!
+
+import {Base} from "../Base.sol";
 
 contract HelloWorld {
     bytes32 private immutable _answer;

@@ -1,6 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.7.0;
 
+// A new stablecoin service has emerged, and they are interested in providing support for NFT lending.
+// The first NFT they have decided to support is "ETH Taipei War Room NFT".
+// You can deposit your War Room NFT to get the stablecoin.
+// To solve this challenge, you are required to have at least 1000 stablecoins.
+
 import {IERC721Receiver} from "openzeppelin-contracts-07/contracts/token/ERC721/IERC721Receiver.sol";
 import {IERC721} from "openzeppelin-contracts-07/contracts/token/ERC721/IERC721.sol";
 import {ERC20} from "openzeppelin-contracts-07/contracts/token/ERC20/ERC20.sol";

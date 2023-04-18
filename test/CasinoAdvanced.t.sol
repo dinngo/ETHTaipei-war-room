@@ -5,9 +5,7 @@ import {IERC20} from "openzeppelin-contracts/contracts/token/ERC20/extensions/ER
 import {IUniswapV2Router02 as IRouter02} from "v2-periphery/interfaces/IUniswapV2Router02.sol";
 import {Test} from "forge-std/Test.sol";
 import {MainnetConfig as Config} from "./NetworkConfig.sol";
-import {CasinoAdvancedBase, Casino} from "src/CasinoAdvanced.sol";
-
-import "forge-std/console.sol";
+import {CasinoAdvancedBase, Casino} from "src/Casino/CasinoAdvanced.sol";
 
 contract CasinoAdvancedTest is Test {
     CasinoAdvancedBase public base;
@@ -67,7 +65,7 @@ contract CasinoAdvancedTest is Test {
         casino.withdraw(Config.WBTC, 1.5e8);
         // solve
         base.solve();
-        assertEq(base.isSolved(), true);
+        assertTrue(base.isSolved());
         vm.stopPrank();
     }
 }
