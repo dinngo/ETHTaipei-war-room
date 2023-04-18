@@ -69,12 +69,12 @@ contract Arcade is ERC20("prize", "PRIZE"), Ownable {
         _redeem(msg.sender);
     }
 
-    function _redeem(address oldPlayer) internal returns (address) {
+    function _redeem(address player) internal returns (address) {
         uint256 points = getCurrentPlayerPoints();
-        _mint(oldPlayer, points);
-        delete scoreboard[oldPlayer];
+        _mint(player, points);
+        delete scoreboard[player];
 
-        return oldPlayer;
+        return player;
     }
 
     function _setNewPlayer(address newPlayer) internal returns (address) {
